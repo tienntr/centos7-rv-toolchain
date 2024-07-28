@@ -5,7 +5,8 @@ COPY fix_repos.sh .
 # Running test suite requires `expect` and `pyelftools` (installed with correct pip
 # or with package manager, depends on the python binary used when running the tests).
 # The tests take so long to run so we skip them.
-# Install boost-devel to enable socket interface in spike.
+# spike needs boost-devel to enable socket interface, but CentOS 7 boost-devel casuses
+# compile error.
 # Install ncurses-devel to enable TUI in GDB.
 # For some reason we can't enable Python support in GDB even if python[3]-devel is
 # installed and GDB is build with system's python or rh-python38.
@@ -25,7 +26,7 @@ RUN ./fix_repos.sh && \
         ninja-build dtc glib2-devel \
         devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-make \
         git236-core rh-python38 \
-        boost-devel gtk3-devel ncurses-devel pixman-devel SDL2-devel vte291-devel && \
+        gtk3-devel ncurses-devel pixman-devel SDL2-devel vte291-devel && \
     curl -Lo cmake.sh https://github.com/Kitware/CMake/releases/download/v3.29.6/cmake-3.29.6-linux-x86_64.sh && \
     chmod +x cmake.sh && \
     ./cmake.sh --skip-license --prefix=/usr/local && \
