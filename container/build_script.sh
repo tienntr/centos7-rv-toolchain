@@ -15,7 +15,8 @@ echo Configure multilib Newlib toolchain
 ./configure "--prefix=$PREFIX" --with-cmodel=medany --enable-multilib --enable-libsanitizer --enable-qemu-system
 
 echo Build multilib Newlib toolchain
-make -j "$NPROC"
+# Use system python3 because rh-python3 doesn't have corresponding `-devel`` package
+GDB_TARGET_FLAGS_EXTRA=--with-python=/usr/bin/python3 make -j "$NPROC"
 
 echo Build QEMU
 make -j "$NPROC" build-sim SIM=qemu
