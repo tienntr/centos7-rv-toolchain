@@ -15,8 +15,13 @@ echo Configure multilib Newlib toolchain
 ./configure "--prefix=$PREFIX" --with-cmodel=medany --enable-multilib --enable-libsanitizer --enable-qemu-system
 
 echo Build multilib Newlib toolchain
-# Use system python3 because rh-python3 doesn't have corresponding `-devel`` package
-GDB_TARGET_FLAGS_EXTRA=--with-python=/usr/bin/python3 make -j "$NPROC"
+if [ -f /etc/centos-release ]; then
+    # Use system python3, rh-python38 doesn't have `-devel` package
+    GDB_FLAGS=--with-python=/usr/bin/python3
+else
+    GDB_FLAGS=
+fi
+GDB_TARGET_FLAGS_EXTRA=$GDB_FLAGS make -j "$NPROC"
 
 echo Build QEMU
 make -j "$NPROC" build-sim SIM=qemu

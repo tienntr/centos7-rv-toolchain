@@ -1,3 +1,3 @@
 .PHONY: all
 all:
-	podman build . -t tienntran/centos7-rv-toolchain-build-env --net host
+	podman build . -t tienntran/centos7-rv-toolchain-build-env --net host -f centos7.Containerfile

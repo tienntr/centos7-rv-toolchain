@@ -1,6 +1,6 @@
 FROM docker.io/centos:7
 
-COPY fix_repos.sh .
+COPY fix_centos7_repos.sh .
 
 # Running test suite requires `expect` and `pyelftools` (installed with correct pip
 # or with package manager, depends on the python binary used when running the tests).
@@ -15,13 +15,13 @@ COPY fix_repos.sh .
 # Install pixman-devel to build qemu-system.
 # Install gtk3-devel, SDL2-devel and vte291-devel to enable QEMU GUI.
 
-RUN ./fix_repos.sh && \
+RUN ./fix_centos7_repos.sh && \
     yum -y update && \
     yum -y install \
         centos-release-scl \
         https://repo.ius.io/ius-release-el7.rpm \
         https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-    ./fix_repos.sh && \
+    ./fix_centos7_repos.sh && \
     yum -y install \
         autoconf automake python3 libmpc-devel mpfr-devel gmp-devel gawk \
         bison flex texinfo patchutils zlib-devel expat-devel \
@@ -36,8 +36,8 @@ RUN ./fix_repos.sh && \
     yum clean all && \
     rm -rf /var/cache/yum
 
-COPY entrypoint.sh build_script.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+COPY centos7_entrypoint.sh build_script.sh /
+ENTRYPOINT ["/centos7_entrypoint.sh"]
 CMD ["/build_script.sh"]
 
 ENV SRC=/ext_src PREFIX=/opt/riscv
